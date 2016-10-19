@@ -10,7 +10,7 @@ namespace IndieBeats_WFA
         // Private instance variables
         private int songIndex = 0;
         private int stream;
-        private string[] files;
+        private List<string> files;
 
         // Properties
         private string currentSongName;
@@ -36,12 +36,17 @@ namespace IndieBeats_WFA
         // Constructor
         public MediaPlayer(string libraryPath, int initialVolume = 100)
         {
-            // Load the users music library
-            files = Directory.GetFiles(libraryPath);
-            
-            // Set the song index to the end of the files array
-            // So it plays in order instead of reverse order
-            songIndex = files.Length - 1;
+            // Initialize the song list
+            files = new List<string>();
+
+            // Add the music library to the files List
+            files.AddRange(Directory.GetFiles(libraryPath));
+
+            // Correct the order of elements in the files List
+            files.Reverse();
+
+            // Initialzie song index to fist song
+            songIndex = 0;
 
             // Create the audio stream
             stream = createStream(files[songIndex]);
@@ -73,11 +78,11 @@ namespace IndieBeats_WFA
             {
                 // We add 1 to songIndex becaue we are treating 
                 // the last array index as the first song.
-                stream = createStream(files[++songIndex]);
+                stream = createStream(files[--songIndex]);
             }
-            catch (IndexOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
-                songIndex = files.Length - 1;
+                songIndex = 0;
                 stream = createStream(files[songIndex]);
             }
 
@@ -93,11 +98,11 @@ namespace IndieBeats_WFA
 
             try
             {
-                stream = createStream(files[--songIndex]);
+                stream = createStream(files[++songIndex]);
             }
-            catch (IndexOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
-                songIndex = files.Length - 1;
+                songIndex = 0;
                 stream = createStream(files[songIndex]);
             }
 
