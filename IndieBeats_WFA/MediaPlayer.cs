@@ -6,17 +6,19 @@ using Un4seen.Bass;
 namespace IndieBeats_WFA
 {
     class MediaPlayer
-    { 
+    {
         // Private instance variables
-        private int songIndex = 0;
+        private int songIndex;
         private int stream;
-        private List<string> files;
+
+        // Public instatnce variables
+        public MusicLibrary library;
 
         // Properties
-        private string currentSongName;
-        public string CurrentSongName
+        private string currentSongPath;
+        public string CurrentSongPath
         {
-            get { return currentSongName; }
+            get { return currentSongPath; }
         }
 
         private int currentVolume;
@@ -26,41 +28,43 @@ namespace IndieBeats_WFA
             set { setVolume(value); }
         }
 
-        private string musicLibaryPath;
-        public string MusicLibraryPath
+        private bool isPaused;
+        public bool IsPaused
         {
-            get { return MusicLibraryPath; }
+            get { return isPaused; }
         }
 
 
         // Constructor
-        public MediaPlayer(string libraryPath, int initialVolume = 100)
+        public MediaPlayer(int initialVolume = 100)
         {
-            // Initialize the song list
-            files = new List<string>();
+            // Create a new music library
+            library = new MusicLibrary();
 
-            // Add the music library to the files List
-            files.AddRange(Directory.GetFiles(libraryPath));
+            // Create the library database
+            library.createLibraryDatabase("Test.DB");
 
-            // Correct the order of elements in the files List
-            files.Reverse();
+            // Load the libary
+            library.loadLibrary("Test.DB");
 
             // Initialzie song index to fist song
             songIndex = 0;
 
             // Create the audio stream
-            stream = createStream(files[songIndex]);
+            stream = createStream(library.getSongPath(songIndex));
 
-            currentSongName = Path.GetFileName(files[songIndex]);
+            currentSongPath = library.getSongPath(songIndex);
+
             currentVolume = initialVolume;
-            musicLibaryPath = libraryPath;
+
+            isPaused = true;
         }
 
 
         // Public Methods
         public void pausePlay()
         {
-            if (Bass.BASS_ChannelPause(stream))
+            if (!isPaused)
             {
                 Bass.BASS_ChannelPause(stream);
             }
@@ -68,55 +72,68 @@ namespace IndieBeats_WFA
             {
                 Bass.BASS_ChannelPlay(stream, false);
             }
+
+            isPaused = !isPaused;
         }
 
         public void playPreviousSong()
         {
             freeStream(stream);
 
-            try
-            {
-                // We add 1 to songIndex becaue we are treating 
-                // the last array index as the first song.
-                stream = createStream(files[--songIndex]);
-            }
-            catch (ArgumentOutOfRangeException)
+            if (songIndex > 0)
+                stream = createStream(library.getSongPath(--songIndex));     
+            else
             {
                 songIndex = 0;
-                stream = createStream(files[songIndex]);
+                stream = createStream(library.getSongPath(songIndex));
             }
 
 
+            if (!isPaused)
+            {
+                playStream(stream);
+            }
+
             setVolume(currentVolume);
-            playStream(stream);
-            currentSongName = Path.GetFileName(files[songIndex]);
+            currentSongPath = library.getSongPath(songIndex);
         }
 
         public void playNextSong()
         {
             freeStream(stream);
 
-            try
-            {
-                stream = createStream(files[++songIndex]);
-            }
-            catch (ArgumentOutOfRangeException)
+            if (songIndex < library.getNumOfSongs())
+                stream = createStream(library.getSongPath(++songIndex));
+            else
             {
                 songIndex = 0;
-                stream = createStream(files[songIndex]);
+                stream = createStream(library.getSongPath(songIndex));
+            }
+
+
+            if (!isPaused)
+            {
+                playStream(stream);
             }
 
             setVolume(currentVolume);
-            playStream(stream);
-            currentSongName = Path.GetFileName(files[songIndex]);
+            currentSongPath = library.getSongPath(songIndex);
         }
 
-        public void changeMusicLibrary()
+        public void playSong(int songNumber)
         {
+            freeStream(stream);
 
+            stream = createStream(library.getSongPath(songNumber));
+            setVolume(currentVolume);
+            playStream(stream);
+            currentSongPath = library.getSongPath(songNumber);
         }
 
-
+        public void selectSong(int songNumber)
+        {
+            currentSongPath = library.getSongPath(songNumber);
+        }
 
         // Private Methods
         private void setVolume(int initialVolume)

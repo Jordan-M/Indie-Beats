@@ -12,32 +12,48 @@ namespace IndieBeats_WFA
         {
             InitializeComponent();
 
-            player = new MediaPlayer("C:\\Users\\Jordan\\Music\\New Soundcloud");
+            player = new MediaPlayer();
+
+            createSongTable();
         }
 
         private void pausePlay_Click(object sender, EventArgs e)
         {
-            // Play the audio file
-            player.pausePlay();
+            if (player.library.libraryIsValid())
+            {
+                // Play the audio file
+                player.pausePlay();
 
-            // Display the name of the current playing song to screen
-            this.SongName.Text = player.CurrentSongName;
+                // Display the name of the current playing song to screen
+                this.SongName.Text = MetadataHandler.getTitle(player.CurrentSongPath);
 
+                if (pausePlay.Text == "Play")
+                    pausePlay.Text = "Pause";
+                else
+                    pausePlay.Text = "Play";
+            }
         }
 
         private void previousSong_Click(object sender, EventArgs e)
         {
-            // Play the previous audio file
-            player.playPreviousSong();
+            if (player.library.libraryIsValid())
+            {
+                // Play the previous audio file
+                player.playPreviousSong();
 
-            // Display the name of the new audio file to screen
-            this.SongName.Text = player.CurrentSongName;
+                // Display the name of the new audio file to screen
+                this.SongName.Text = MetadataHandler.getTitle(player.CurrentSongPath);
+            }
+
         }
 
         private void nextSong_Click(object sender, EventArgs e)
         {
-            player.playNextSong();
-            this.SongName.Text = player.CurrentSongName;
+            if (player.library.libraryIsValid())
+            {
+                player.playNextSong();
+                this.SongName.Text = MetadataHandler.getTitle(player.CurrentSongPath);
+            }
         }
 
         private void volumeSlider_Scroll(object sender, EventArgs e)
@@ -50,7 +66,17 @@ namespace IndieBeats_WFA
         {
             if (FolderBrowser.ShowDialog() == DialogResult.OK)
             {
-                string library = FolderBrowser.SelectedPath;
+                if (!player.library.libraryIsValid())
+                {
+                    player.library.addMusicFolder(FolderBrowser.SelectedPath);
+                    updateSongTable();
+                    player.selectSong(0);
+                }
+                else
+                {
+                    player.library.addMusicFolder(FolderBrowser.SelectedPath);
+                    updateSongTable();
+                }
             }
         }
 
@@ -58,8 +84,35 @@ namespace IndieBeats_WFA
         {
             if (FileBrowser.ShowDialog() == DialogResult.OK)
             {
-                string library = FolderBrowser.SelectedPath;
+                if (!player.library.libraryIsValid())
+                {
+                    player.library.addMusicFile(FileBrowser.FileName);
+                    updateSongTable();
+                    player.selectSong(0);
+                }
+                else
+                {
+                    player.library.addMusicFile(FileBrowser.FileName);
+                    updateSongTable();
+                }
             }
         }
+
+        private void createSongTable()
+        {
+            songTable.Columns.Add("SongName", "Song Name");
+            songTable.Columns["SongName"].Width = songTable.Width;
+            updateSongTable();
+        }
+
+        private void updateSongTable()
+        {
+            for (int i = 0; i <= player.library.getNumOfSongs(); i++)
+            {
+                songTable.Rows.Add(player.library.getSongPath(i));
+            }
+        }
+
+
     }
 }
