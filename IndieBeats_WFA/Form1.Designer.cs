@@ -31,7 +31,6 @@
             this.pausePlay = new System.Windows.Forms.Button();
             this.nextSong = new System.Windows.Forms.Button();
             this.previousSong = new System.Windows.Forms.Button();
-            this.currentlyPlaying = new System.Windows.Forms.Label();
             this.SongName = new System.Windows.Forms.Label();
             this.CurrentVolume = new System.Windows.Forms.Label();
             this.VolumeSlider = new System.Windows.Forms.TrackBar();
@@ -43,9 +42,11 @@
             this.folderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FileBrowser = new System.Windows.Forms.OpenFileDialog();
             this.songTable = new System.Windows.Forms.DataGridView();
+            this.albumArt = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeSlider)).BeginInit();
             this.MenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.songTable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.albumArt)).BeginInit();
             this.SuspendLayout();
             // 
             // pausePlay
@@ -78,19 +79,10 @@
             this.previousSong.UseVisualStyleBackColor = true;
             this.previousSong.Click += new System.EventHandler(this.previousSong_Click);
             // 
-            // currentlyPlaying
-            // 
-            this.currentlyPlaying.AutoSize = true;
-            this.currentlyPlaying.Location = new System.Drawing.Point(12, 409);
-            this.currentlyPlaying.Name = "currentlyPlaying";
-            this.currentlyPlaying.Size = new System.Drawing.Size(88, 13);
-            this.currentlyPlaying.TabIndex = 3;
-            this.currentlyPlaying.Text = "Currently Playing:";
-            // 
             // SongName
             // 
             this.SongName.AutoSize = true;
-            this.SongName.Location = new System.Drawing.Point(106, 409);
+            this.SongName.Location = new System.Drawing.Point(12, 418);
             this.SongName.Name = "SongName";
             this.SongName.Size = new System.Drawing.Size(33, 13);
             this.SongName.TabIndex = 4;
@@ -167,18 +159,26 @@
             this.songTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.songTable.Location = new System.Drawing.Point(12, 27);
             this.songTable.Name = "songTable";
-            this.songTable.Size = new System.Drawing.Size(809, 345);
+            this.songTable.Size = new System.Drawing.Size(809, 279);
             this.songTable.TabIndex = 9;
+            // 
+            // albumArt
+            // 
+            this.albumArt.Location = new System.Drawing.Point(12, 312);
+            this.albumArt.Name = "albumArt";
+            this.albumArt.Size = new System.Drawing.Size(186, 103);
+            this.albumArt.TabIndex = 10;
+            this.albumArt.TabStop = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(833, 493);
+            this.Controls.Add(this.albumArt);
             this.Controls.Add(this.songTable);
             this.Controls.Add(this.CurrentVolume);
             this.Controls.Add(this.SongName);
-            this.Controls.Add(this.currentlyPlaying);
             this.Controls.Add(this.previousSong);
             this.Controls.Add(this.nextSong);
             this.Controls.Add(this.pausePlay);
@@ -191,6 +191,7 @@
             this.MenuStrip.ResumeLayout(false);
             this.MenuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.songTable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.albumArt)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -201,7 +202,6 @@
         private System.Windows.Forms.Button pausePlay;
         private System.Windows.Forms.Button nextSong;
         private System.Windows.Forms.Button previousSong;
-        private System.Windows.Forms.Label currentlyPlaying;
         internal System.Windows.Forms.Label SongName;
         internal System.Windows.Forms.Label CurrentVolume;
         internal System.Windows.Forms.TrackBar VolumeSlider;
@@ -213,6 +213,7 @@
         private System.Windows.Forms.ToolStripMenuItem folderToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog FileBrowser;
         private System.Windows.Forms.DataGridView songTable;
+        private System.Windows.Forms.PictureBox albumArt;
     }
 }
 

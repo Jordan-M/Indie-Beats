@@ -27,6 +27,8 @@ namespace IndieBeats_WFA
                 // Display the name of the current playing song to screen
                 this.SongName.Text = MetadataHandler.getTitle(player.CurrentSongPath);
 
+                albumArt.Image = MetadataHandler.getAlbumArt((player.CurrentSongPath));
+
                 if (pausePlay.Text == "Play")
                     pausePlay.Text = "Pause";
                 else
@@ -43,6 +45,9 @@ namespace IndieBeats_WFA
 
                 // Display the name of the new audio file to screen
                 this.SongName.Text = MetadataHandler.getTitle(player.CurrentSongPath);
+
+                // Display the album art to screen
+                albumArt.Image = MetadataHandler.getAlbumArt((player.CurrentSongPath));
             }
 
         }
@@ -51,8 +56,14 @@ namespace IndieBeats_WFA
         {
             if (player.library.libraryIsValid())
             {
+                // Play next audio file
                 player.playNextSong();
+
+                // Display the name of the new audio file
                 this.SongName.Text = MetadataHandler.getTitle(player.CurrentSongPath);
+
+                // Display the album are of the new file
+                albumArt.Image = MetadataHandler.getAlbumArt((player.CurrentSongPath));
             }
         }
 

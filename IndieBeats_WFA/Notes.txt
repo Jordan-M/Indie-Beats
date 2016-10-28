@@ -1,6 +1,1 @@
 ﻿Add a loading screen when adding a music source so the user can't play music that isnt in the library yet
-
-Theres a weird error when I add a music library and try to play a song, I get a 0 not found error.
-	Error is not in createTable
-
-Pull meta data and use that for things like song name instead of the file name
