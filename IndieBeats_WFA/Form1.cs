@@ -27,12 +27,16 @@ namespace IndieBeats_WFA
                 // Display the name of the current playing song to screen
                 this.SongName.Text = MetadataHandler.getTitle(player.CurrentSongPath);
 
-                albumArt.Image = MetadataHandler.getAlbumArt((player.CurrentSongPath));
+                // Display artist's name
+                ArtistName.Text = MetadataHandler.getArtist(player.CurrentSongPath);
 
-                if (pausePlay.Text == "Play")
-                    pausePlay.Text = "Pause";
-                else
+                // Display album art
+                albumArt.Image = MetadataHandler.getAlbumArt((player.CurrentSongPath), 142, 142);
+
+                if (player.IsPaused)
                     pausePlay.Text = "Play";
+                else
+                    pausePlay.Text = "Pause";
             }
         }
 
@@ -44,10 +48,13 @@ namespace IndieBeats_WFA
                 player.playPreviousSong();
 
                 // Display the name of the new audio file to screen
-                this.SongName.Text = MetadataHandler.getTitle(player.CurrentSongPath);
+                SongName.Text = MetadataHandler.getTitle(player.CurrentSongPath);
+
+                // Display artist's name
+                ArtistName.Text = MetadataHandler.getArtist(player.CurrentSongPath);
 
                 // Display the album art to screen
-                albumArt.Image = MetadataHandler.getAlbumArt((player.CurrentSongPath));
+                albumArt.Image = MetadataHandler.getAlbumArt((player.CurrentSongPath), 142, 142);
             }
 
         }
@@ -60,10 +67,13 @@ namespace IndieBeats_WFA
                 player.playNextSong();
 
                 // Display the name of the new audio file
-                this.SongName.Text = MetadataHandler.getTitle(player.CurrentSongPath);
+                SongName.Text = MetadataHandler.getTitle(player.CurrentSongPath);
+
+                // Display artist's name
+                ArtistName.Text = MetadataHandler.getArtist(player.CurrentSongPath);
 
                 // Display the album are of the new file
-                albumArt.Image = MetadataHandler.getAlbumArt((player.CurrentSongPath));
+                albumArt.Image = MetadataHandler.getAlbumArt((player.CurrentSongPath), 142, 142);
             }
         }
 
@@ -120,7 +130,7 @@ namespace IndieBeats_WFA
         {
             for (int i = 0; i <= player.library.getNumOfSongs(); i++)
             {
-                songTable.Rows.Add(player.library.getSongPath(i));
+                songTable.Rows.Add(MetadataHandler.getTitle(player.library.getSongPath(i)));
             }
         }
 

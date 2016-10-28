@@ -43,6 +43,7 @@
             this.FileBrowser = new System.Windows.Forms.OpenFileDialog();
             this.songTable = new System.Windows.Forms.DataGridView();
             this.albumArt = new System.Windows.Forms.PictureBox();
+            this.ArtistName = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeSlider)).BeginInit();
             this.MenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.songTable)).BeginInit();
@@ -51,7 +52,7 @@
             // 
             // pausePlay
             // 
-            this.pausePlay.Location = new System.Drawing.Point(76, 434);
+            this.pausePlay.Location = new System.Drawing.Point(76, 548);
             this.pausePlay.Name = "pausePlay";
             this.pausePlay.Size = new System.Drawing.Size(58, 45);
             this.pausePlay.TabIndex = 0;
@@ -61,7 +62,7 @@
             // 
             // nextSong
             // 
-            this.nextSong.Location = new System.Drawing.Point(140, 434);
+            this.nextSong.Location = new System.Drawing.Point(140, 548);
             this.nextSong.Name = "nextSong";
             this.nextSong.Size = new System.Drawing.Size(58, 45);
             this.nextSong.TabIndex = 1;
@@ -71,7 +72,7 @@
             // 
             // previousSong
             // 
-            this.previousSong.Location = new System.Drawing.Point(12, 434);
+            this.previousSong.Location = new System.Drawing.Point(12, 548);
             this.previousSong.Name = "previousSong";
             this.previousSong.Size = new System.Drawing.Size(58, 45);
             this.previousSong.TabIndex = 2;
@@ -82,7 +83,7 @@
             // SongName
             // 
             this.SongName.AutoSize = true;
-            this.SongName.Location = new System.Drawing.Point(12, 418);
+            this.SongName.Location = new System.Drawing.Point(12, 512);
             this.SongName.Name = "SongName";
             this.SongName.Size = new System.Drawing.Size(33, 13);
             this.SongName.TabIndex = 4;
@@ -91,7 +92,7 @@
             // CurrentVolume
             // 
             this.CurrentVolume.AutoSize = true;
-            this.CurrentVolume.Location = new System.Drawing.Point(808, 385);
+            this.CurrentVolume.Location = new System.Drawing.Point(927, 487);
             this.CurrentVolume.Name = "CurrentVolume";
             this.CurrentVolume.Size = new System.Drawing.Size(25, 13);
             this.CurrentVolume.TabIndex = 6;
@@ -99,7 +100,7 @@
             // 
             // VolumeSlider
             // 
-            this.VolumeSlider.Location = new System.Drawing.Point(788, 378);
+            this.VolumeSlider.Location = new System.Drawing.Point(907, 480);
             this.VolumeSlider.Maximum = 100;
             this.VolumeSlider.Name = "VolumeSlider";
             this.VolumeSlider.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -115,7 +116,7 @@
             this.fileToolStripMenuItem});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
-            this.MenuStrip.Size = new System.Drawing.Size(833, 24);
+            this.MenuStrip.Size = new System.Drawing.Size(964, 24);
             this.MenuStrip.TabIndex = 8;
             this.MenuStrip.Text = "menuStrip1";
             // 
@@ -159,22 +160,32 @@
             this.songTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.songTable.Location = new System.Drawing.Point(12, 27);
             this.songTable.Name = "songTable";
-            this.songTable.Size = new System.Drawing.Size(809, 279);
+            this.songTable.Size = new System.Drawing.Size(940, 328);
             this.songTable.TabIndex = 9;
             // 
             // albumArt
             // 
-            this.albumArt.Location = new System.Drawing.Point(12, 312);
+            this.albumArt.Location = new System.Drawing.Point(15, 367);
             this.albumArt.Name = "albumArt";
-            this.albumArt.Size = new System.Drawing.Size(186, 103);
+            this.albumArt.Size = new System.Drawing.Size(142, 142);
             this.albumArt.TabIndex = 10;
             this.albumArt.TabStop = false;
+            // 
+            // ArtistName
+            // 
+            this.ArtistName.AutoSize = true;
+            this.ArtistName.Location = new System.Drawing.Point(12, 532);
+            this.ArtistName.Name = "ArtistName";
+            this.ArtistName.Size = new System.Drawing.Size(33, 13);
+            this.ArtistName.TabIndex = 11;
+            this.ArtistName.Text = "None";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(833, 493);
+            this.ClientSize = new System.Drawing.Size(964, 605);
+            this.Controls.Add(this.ArtistName);
             this.Controls.Add(this.albumArt);
             this.Controls.Add(this.songTable);
             this.Controls.Add(this.CurrentVolume);
@@ -214,6 +225,7 @@
         private System.Windows.Forms.OpenFileDialog FileBrowser;
         private System.Windows.Forms.DataGridView songTable;
         private System.Windows.Forms.PictureBox albumArt;
+        private System.Windows.Forms.Label ArtistName;
     }
 }
 

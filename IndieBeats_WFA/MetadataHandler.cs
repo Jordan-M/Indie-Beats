@@ -30,7 +30,7 @@ namespace IndieBeats_WFA
         public static string getArtist(string filePath)
         {
             TagLib.File info = TagLib.File.Create(filePath);
-            return info.Tag.FirstAlbumArtist;
+            return info.Tag.FirstPerformer;
         }
 
         public static string getComment(string filePath)
@@ -45,17 +45,17 @@ namespace IndieBeats_WFA
             return info.Tag.Year.ToString();
         }
 
-        public static Image getAlbumArt(string filePath)
+        public static Image getAlbumArt(string filePath, int imageWidth, int imageHeight)
         {
             TagLib.File info = TagLib.File.Create(filePath);
             
             if (info.Tag.Pictures.Length >= 1)
             {
                 var bin = (byte[])(info.Tag.Pictures[0].Data.Data);
-                return Image.FromStream(new MemoryStream(bin)).GetThumbnailImage(100, 100, null, IntPtr.Zero);
+                return Image.FromStream(new MemoryStream(bin)).GetThumbnailImage(imageWidth, imageHeight, null, IntPtr.Zero);
             }
 
-            return Image.FromFile("..\\..\\..\\Images\\album_not_found.jpg").GetThumbnailImage(100, 100, null, IntPtr.Zero);
+            return Image.FromFile("..\\..\\..\\Images\\album_not_found.jpg").GetThumbnailImage(imageWidth, imageHeight, null, IntPtr.Zero);
         }
     }
 }
