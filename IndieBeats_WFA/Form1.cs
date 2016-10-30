@@ -15,23 +15,19 @@ namespace IndieBeats_WFA
             player = new MediaPlayer();
 
             createSongTable();
+
+            displayData();
         }
 
         private void pausePlay_Click(object sender, EventArgs e)
         {
             if (player.library.libraryIsValid())
             {
-                // Play the audio file
+                // Pause or play the audio file
                 player.pausePlay();
 
-                // Display the name of the current playing song to screen
-                this.SongName.Text = MetadataHandler.getTitle(player.CurrentSongPath);
-
-                // Display artist's name
-                ArtistName.Text = MetadataHandler.getArtist(player.CurrentSongPath);
-
-                // Display album art
-                albumArt.Image = MetadataHandler.getAlbumArt((player.CurrentSongPath), 142, 142);
+                // Display the song properties to screen
+                displayData();
 
                 if (player.IsPaused)
                     pausePlay.Text = "Play";
@@ -46,15 +42,7 @@ namespace IndieBeats_WFA
             {
                 // Play the previous audio file
                 player.playPreviousSong();
-
-                // Display the name of the new audio file to screen
-                SongName.Text = MetadataHandler.getTitle(player.CurrentSongPath);
-
-                // Display artist's name
-                ArtistName.Text = MetadataHandler.getArtist(player.CurrentSongPath);
-
-                // Display the album art to screen
-                albumArt.Image = MetadataHandler.getAlbumArt((player.CurrentSongPath), 142, 142);
+                displayData();
             }
 
         }
@@ -65,15 +53,7 @@ namespace IndieBeats_WFA
             {
                 // Play next audio file
                 player.playNextSong();
-
-                // Display the name of the new audio file
-                SongName.Text = MetadataHandler.getTitle(player.CurrentSongPath);
-
-                // Display artist's name
-                ArtistName.Text = MetadataHandler.getArtist(player.CurrentSongPath);
-
-                // Display the album are of the new file
-                albumArt.Image = MetadataHandler.getAlbumArt((player.CurrentSongPath), 142, 142);
+                displayData();
             }
         }
 
@@ -121,8 +101,14 @@ namespace IndieBeats_WFA
 
         private void createSongTable()
         {
-            songTable.Columns.Add("SongName", "Song Name");
-            songTable.Columns["SongName"].Width = songTable.Width;
+            songTable.Columns.Add("SongName", "Song");
+            songTable.Columns.Add("ArtistName", "Artist");
+            songTable.Columns.Add("AlbumName", "Album");
+
+            songTable.Columns["SongName"].Width = songTable.Width / songTable.Columns.Count;
+            songTable.Columns["ArtistName"].Width = songTable.Width / songTable.Columns.Count;
+            songTable.Columns["AlbumName"].Width = songTable.Width / songTable.Columns.Count;
+
             updateSongTable();
         }
 
@@ -130,8 +116,23 @@ namespace IndieBeats_WFA
         {
             for (int i = 0; i <= player.library.getNumOfSongs(); i++)
             {
-                songTable.Rows.Add(MetadataHandler.getTitle(player.library.getSongPath(i)));
+                songTable.Rows.Add();
+                songTable.Rows[i].Cells["SongName"].Value = MetadataHandler.getTitle(player.library.getSongPath(i));
+                songTable.Rows[i].Cells["ArtistName"].Value = MetadataHandler.getArtist(player.library.getSongPath(i));
+                songTable.Rows[i].Cells["AlbumName"].Value = MetadataHandler.getAlbum(player.library.getSongPath(i));
             }
+        }
+
+        private void displayData()
+        {
+            // Display the name of the current playing song to screen
+            SongName.Text = player.song.Name;
+
+            // Display artist's name
+            ArtistName.Text = player.song.Artist;
+
+            // Display album art
+            albumArt.Image = player.song.AlbumArt;
         }
 
 

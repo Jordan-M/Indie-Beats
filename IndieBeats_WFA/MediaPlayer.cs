@@ -13,12 +13,13 @@ namespace IndieBeats_WFA
 
         // Public instatnce variables
         public MusicLibrary library;
+        public Song song = new Song();
 
         // Properties
-        private string currentSongPath;
-        public string CurrentSongPath
+        private string selectedSong;
+        public string SelectedSong
         {
-            get { return currentSongPath; }
+            get { return selectedSong; }
         }
 
         private int currentVolume;
@@ -53,7 +54,7 @@ namespace IndieBeats_WFA
             // Create the audio stream
             stream = createStream(library.getSongPath(songIndex));
 
-            currentSongPath = library.getSongPath(songIndex);
+            setSongData();
 
             currentVolume = initialVolume;
 
@@ -95,7 +96,7 @@ namespace IndieBeats_WFA
             }
 
             setVolume(currentVolume);
-            currentSongPath = library.getSongPath(songIndex);
+            setSongData();
         }
 
         public void playNextSong()
@@ -117,7 +118,7 @@ namespace IndieBeats_WFA
             }
 
             setVolume(currentVolume);
-            currentSongPath = library.getSongPath(songIndex);
+            setSongData();
         }
 
         public void playSong(int songNumber)
@@ -127,12 +128,12 @@ namespace IndieBeats_WFA
             stream = createStream(library.getSongPath(songNumber));
             setVolume(currentVolume);
             playStream(stream);
-            currentSongPath = library.getSongPath(songNumber);
+            setSongData();
         }
 
         public void selectSong(int songNumber)
         {
-            currentSongPath = library.getSongPath(songNumber);
+            selectedSong = library.getSongPath(songNumber);
         }
 
         // Private Methods
@@ -179,6 +180,15 @@ namespace IndieBeats_WFA
             Bass.BASS_StreamFree(stream);
             // free BASS
             Bass.BASS_Free();
+        }
+
+        private void setSongData()
+        {
+            song.Path = library.getSongPath(songIndex);
+            song.Name = MetadataHandler.getTitle(song.Path);
+            song.Album = MetadataHandler.getAlbum(song.Path);
+            song.Artist = MetadataHandler.getArtist(song.Path);
+            song.AlbumArt = MetadataHandler.getAlbumArt(song.Path, 142, 142);
         }
 
     }
