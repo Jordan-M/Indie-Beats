@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pausePlay = new System.Windows.Forms.Button();
             this.nextSong = new System.Windows.Forms.Button();
             this.previousSong = new System.Windows.Forms.Button();
@@ -44,10 +45,15 @@
             this.songTable = new System.Windows.Forms.DataGridView();
             this.albumArt = new System.Windows.Forms.PictureBox();
             this.ArtistName = new System.Windows.Forms.Label();
+            this.TimeBar = new System.Windows.Forms.TrackBar();
+            this.Time = new System.Windows.Forms.Label();
+            this.CurrentTime = new System.Windows.Forms.Label();
+            this.SongTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.VolumeSlider)).BeginInit();
             this.MenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.songTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.albumArt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TimeBar)).BeginInit();
             this.SuspendLayout();
             // 
             // pausePlay
@@ -180,11 +186,47 @@
             this.ArtistName.TabIndex = 11;
             this.ArtistName.Text = "None";
             // 
+            // TimeBar
+            // 
+            this.TimeBar.Location = new System.Drawing.Point(204, 548);
+            this.TimeBar.Name = "TimeBar";
+            this.TimeBar.Size = new System.Drawing.Size(697, 45);
+            this.TimeBar.TabIndex = 12;
+            this.TimeBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.TimeBar.Scroll += new System.EventHandler(this.TimeBar_Scroll);
+            this.TimeBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TimeBar_MouseDown);
+            this.TimeBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TimeBar_MouseUp);
+            // 
+            // Time
+            // 
+            this.Time.AutoSize = true;
+            this.Time.Location = new System.Drawing.Point(871, 569);
+            this.Time.Name = "Time";
+            this.Time.Size = new System.Drawing.Size(30, 13);
+            this.Time.TabIndex = 13;
+            this.Time.Text = "Time";
+            // 
+            // CurrentTime
+            // 
+            this.CurrentTime.AutoSize = true;
+            this.CurrentTime.Location = new System.Drawing.Point(201, 569);
+            this.CurrentTime.Name = "CurrentTime";
+            this.CurrentTime.Size = new System.Drawing.Size(28, 13);
+            this.CurrentTime.TabIndex = 14;
+            this.CurrentTime.Text = "0:00";
+            // 
+            // SongTimer
+            // 
+            this.SongTimer.Interval = 1000;
+            this.SongTimer.Tick += new System.EventHandler(this.SongTimer_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(964, 605);
+            this.Controls.Add(this.CurrentTime);
+            this.Controls.Add(this.Time);
             this.Controls.Add(this.ArtistName);
             this.Controls.Add(this.albumArt);
             this.Controls.Add(this.songTable);
@@ -195,6 +237,7 @@
             this.Controls.Add(this.pausePlay);
             this.Controls.Add(this.MenuStrip);
             this.Controls.Add(this.VolumeSlider);
+            this.Controls.Add(this.TimeBar);
             this.MainMenuStrip = this.MenuStrip;
             this.Name = "Form1";
             this.Text = "Form1";
@@ -203,6 +246,7 @@
             this.MenuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.songTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.albumArt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TimeBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -226,6 +270,10 @@
         private System.Windows.Forms.DataGridView songTable;
         private System.Windows.Forms.PictureBox albumArt;
         private System.Windows.Forms.Label ArtistName;
+        private System.Windows.Forms.TrackBar TimeBar;
+        private System.Windows.Forms.Label Time;
+        private System.Windows.Forms.Label CurrentTime;
+        private System.Windows.Forms.Timer SongTimer;
     }
 }
 

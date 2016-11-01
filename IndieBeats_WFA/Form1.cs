@@ -30,9 +30,17 @@ namespace IndieBeats_WFA
                 displayData();
 
                 if (player.IsPaused)
+                {
                     pausePlay.Text = "Play";
+                    SongTimer.Stop();
+                }
+
                 else
+                {
+                    SongTimer.Start();
                     pausePlay.Text = "Pause";
+                }
+
             }
         }
 
@@ -43,6 +51,7 @@ namespace IndieBeats_WFA
                 // Play the previous audio file
                 player.playPreviousSong();
                 displayData();
+                songTable.CurrentCell = songTable.Rows[player.song.Index].Cells["SongName"];
             }
 
         }
@@ -55,6 +64,7 @@ namespace IndieBeats_WFA
                 player.playNextSong();
                 displayData();
             }
+            songTable.CurrentCell = songTable.Rows[player.song.Index].Cells["SongName"];
         }
 
         private void volumeSlider_Scroll(object sender, EventArgs e)
@@ -133,8 +143,64 @@ namespace IndieBeats_WFA
 
             // Display album art
             albumArt.Image = player.song.AlbumArt;
+
+            // Display song length
+            displayTime(player.song.TimeInSeconds, Time);
+            
+            TimeBar.Maximum = player.song.TimeInSeconds;
         }
 
+        private void TimeBar_Scroll(object sender, EventArgs e)
+        {
+            player.Time = TimeBar.Value;
+            if (!mouseIsDown)
+            {
+               /* if (TimeBar.Value >= player.song.TimeInSeconds)
+                {
+                    player.playNextSong();
+                    displayData();
+                    TimeBar.Value = 0;
+                }*/
+            }
+            displayTime(TimeBar.Value, CurrentTime);
+        }
 
+        private void SongTimer_Tick(object sender, EventArgs e)
+        { 
+            if (TimeBar.Value >= player.song.TimeInSeconds)
+            {
+                TimeBar.Value = 0;
+                player.playNextSong();
+                displayData();
+            }
+
+            TimeBar.Value += 1;
+            displayTime(TimeBar.Value, CurrentTime);
+        }
+
+        private void TimeBar_MouseUp(object sender, EventArgs e)
+        {
+            mouseIsDown = false;
+            SongTimer.Start();
+        }
+
+        private void TimeBar_MouseDown(object sender, EventArgs e)
+        {
+            mouseIsDown = true;
+            SongTimer.Stop();
+        }
+
+        private void displayTime(int timeInSeconds, Label label)
+        {
+            int minutes = timeInSeconds / 60;
+            int seconds = timeInSeconds % 60;
+
+            if (seconds < 10)
+                label.Text = minutes.ToString() + ":0" + seconds.ToString();
+            else
+                label.Text = minutes.ToString() + ":" + seconds.ToString();
+        }
+
+        bool mouseIsDown = false;
     }
 }

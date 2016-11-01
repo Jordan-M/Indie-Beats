@@ -35,6 +35,12 @@ namespace IndieBeats_WFA
             get { return isPaused; }
         }
 
+        private double time;
+        public double Time
+        {
+            set { setTime(value); }
+        }
+
 
         // Constructor
         public MediaPlayer(int initialVolume = 100)
@@ -82,10 +88,14 @@ namespace IndieBeats_WFA
             freeStream(stream);
 
             if (songIndex > 0)
-                stream = createStream(library.getSongPath(--songIndex));     
+            {
+                stream = createStream(library.getSongPath(--songIndex));
+                song.Index = songIndex;
+            } 
             else
             {
                 songIndex = 0;
+                song.Index = 0;
                 stream = createStream(library.getSongPath(songIndex));
             }
 
@@ -104,10 +114,14 @@ namespace IndieBeats_WFA
             freeStream(stream);
 
             if (songIndex < library.getNumOfSongs())
+            {
                 stream = createStream(library.getSongPath(++songIndex));
+                song.Index = songIndex;
+            }
             else
             {
                 songIndex = 0;
+                song.Index = 0;
                 stream = createStream(library.getSongPath(songIndex));
             }
 
@@ -136,6 +150,7 @@ namespace IndieBeats_WFA
             selectedSong = library.getSongPath(songNumber);
         }
 
+
         // Private Methods
         private void setVolume(int initialVolume)
         {
@@ -146,6 +161,11 @@ namespace IndieBeats_WFA
             float actualVolume = currentVolume * (float)Math.Pow(10, -2);
 
             Bass.BASS_ChannelSetAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, actualVolume);
+        }
+
+        private void setTime(double seconds)
+        {
+            Bass.BASS_ChannelSetPosition(stream, seconds);
         }
 
 
@@ -189,6 +209,22 @@ namespace IndieBeats_WFA
             song.Album = MetadataHandler.getAlbum(song.Path);
             song.Artist = MetadataHandler.getArtist(song.Path);
             song.AlbumArt = MetadataHandler.getAlbumArt(song.Path, 142, 142);
+            song.TimeInSeconds = (int)Math.Floor(Bass.BASS_ChannelBytes2Seconds(stream, Bass.BASS_ChannelGetLength(stream)));
+            song.Minutes = getMinutes();
+            song.Seconds = getSeconds();
+        }
+
+        private int getMinutes()
+        {
+            double fullTime = Bass.BASS_ChannelBytes2Seconds(stream, Bass.BASS_ChannelGetLength(stream));
+            return (int)Math.Floor(fullTime / 60);           
+        }
+
+        private int getSeconds()
+        {
+            double fullTime = Bass.BASS_ChannelBytes2Seconds(stream, Bass.BASS_ChannelGetLength(stream));
+            //fullTime = Math.Floor(fullTime);
+            return (int)Math.Floor(fullTime % 60);
         }
 
     }
