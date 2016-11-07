@@ -67,13 +67,5 @@ namespace IndieBeats_WFA
             get { return timeInSeconds; }
             set { timeInSeconds = value; }
         }
-
-        private int previousSongIndex;
-        public int PreviousSongIndex
-        {
-            get { return previousSongIndex; }
-            set { previousSongIndex = value; }
-        }
-
     }
 }

@@ -26,7 +26,7 @@ namespace IndieBeats_WFA
             createSongTable();
 
             displayData();
-            setTimeBarData();
+            resetTimeBarData();
         }
 
         private void pausePlay_Click(object sender, EventArgs e)
@@ -60,7 +60,7 @@ namespace IndieBeats_WFA
                 // Play the previous audio file
                 player.playPreviousSong();
                 displayData();
-                setTimeBarData();
+                resetTimeBarData();
                 songTable.CurrentCell = songTable.Rows[player.song.Index].Cells["SongName"];
             }
 
@@ -73,7 +73,7 @@ namespace IndieBeats_WFA
                 // Play next audio file
                 player.playNextSong();
                 displayData();
-                setTimeBarData();
+                resetTimeBarData();
                 songTable.CurrentCell = songTable.Rows[player.song.Index].Cells["SongName"];
             }
         }
@@ -157,9 +157,15 @@ namespace IndieBeats_WFA
 
             // Display song length
             displayTime(player.song.TimeInSeconds, Time);
+
+            // Set timebar to the songs current time
+            TimeBar.Value = (int)player.Time;
+
+            // Display thee current time
+            displayTime((int)player.Time, CurrentTime);
         }
 
-        private void setTimeBarData()
+        private void resetTimeBarData()
         {
             TimeBar.Maximum = player.song.TimeInSeconds;
             TimeBar.Value = 0;
@@ -172,9 +178,22 @@ namespace IndieBeats_WFA
         }
 
         private void SongTimer_Tick(object sender, EventArgs e)
-        { 
-            TimeBar.Value += 1;
-            displayTime(TimeBar.Value, CurrentTime);
+        {   
+            if (!player.IsPaused)
+            {
+                TimeBar.Value += 1;
+            }
+
+            if (TimeBar.Value >= player.song.TimeInSeconds)
+            {
+                player.playNextSong();
+                resetTimeBarData();
+                displayData();
+            }
+            else
+            {
+                displayTime(TimeBar.Value, CurrentTime);
+            }
         }
 
         private void TimeBar_MouseUp(object sender, EventArgs e)
@@ -185,8 +204,9 @@ namespace IndieBeats_WFA
             if (TimeBar.Value >= player.song.TimeInSeconds)
             {
                 player.playNextSong();
-                setTimeBarData();
+                resetTimeBarData();
                 displayData();
+                songTable.CurrentCell = songTable.Rows[player.song.Index].Cells["SongName"];
             }
         }
 

@@ -35,10 +35,9 @@ namespace IndieBeats_WFA
             get { return isPaused; }
         }
 
-        private double time;
         public double Time
         {
-            get { return time; }
+            get { return Bass.BASS_ChannelBytes2Seconds(stream, Bass.BASS_ChannelGetPosition(stream)); }
             set { setTime(value); }
         }
 
@@ -115,7 +114,6 @@ namespace IndieBeats_WFA
             if (song.Index > 0)
             {
                 stream = createStream(library.getSongPath(--song.Index));
-                song.PreviousSongIndex = song.Index;
             } 
             else
             {
@@ -139,7 +137,6 @@ namespace IndieBeats_WFA
 
             if (shuffle)
             {
-                song.PreviousSongIndex = song.Index;
                 song.Index = new Random().Next(library.getNumOfSongs());
 
                 playSong(song.Index);
@@ -171,7 +168,6 @@ namespace IndieBeats_WFA
             freeStream(stream);
 
             stream = createStream(library.getSongPath(songNumber));
-            song.PreviousSongIndex = song.Index;
             song.Index = songNumber;
             setVolume(currentVolume);
             playStream(stream);
