@@ -11,12 +11,22 @@ namespace IndieBeats_WFA
         public Form1()
         {
             InitializeComponent();
+            
+            try
+            {
+                player = new MediaPlayer();
+            }
+            catch (DllNotFoundException ex)
+            {
+                MessageBox.Show(ex.Message, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(0);
+            }
 
-            player = new MediaPlayer();
 
             createSongTable();
 
             displayData();
+            setTimeBarData();
         }
 
         private void pausePlay_Click(object sender, EventArgs e)
@@ -40,7 +50,6 @@ namespace IndieBeats_WFA
                     SongTimer.Start();
                     pausePlay.Text = "Pause";
                 }
-
             }
         }
 
@@ -51,6 +60,7 @@ namespace IndieBeats_WFA
                 // Play the previous audio file
                 player.playPreviousSong();
                 displayData();
+                setTimeBarData();
                 songTable.CurrentCell = songTable.Rows[player.song.Index].Cells["SongName"];
             }
 
@@ -63,8 +73,9 @@ namespace IndieBeats_WFA
                 // Play next audio file
                 player.playNextSong();
                 displayData();
+                setTimeBarData();
+                songTable.CurrentCell = songTable.Rows[player.song.Index].Cells["SongName"];
             }
-            songTable.CurrentCell = songTable.Rows[player.song.Index].Cells["SongName"];
         }
 
         private void volumeSlider_Scroll(object sender, EventArgs e)
@@ -146,47 +157,41 @@ namespace IndieBeats_WFA
 
             // Display song length
             displayTime(player.song.TimeInSeconds, Time);
-            
+        }
+
+        private void setTimeBarData()
+        {
             TimeBar.Maximum = player.song.TimeInSeconds;
+            TimeBar.Value = 0;
+            displayTime(TimeBar.Value, CurrentTime);
         }
 
         private void TimeBar_Scroll(object sender, EventArgs e)
         {
-            player.Time = TimeBar.Value;
-            if (!mouseIsDown)
-            {
-               /* if (TimeBar.Value >= player.song.TimeInSeconds)
-                {
-                    player.playNextSong();
-                    displayData();
-                    TimeBar.Value = 0;
-                }*/
-            }
             displayTime(TimeBar.Value, CurrentTime);
         }
 
         private void SongTimer_Tick(object sender, EventArgs e)
         { 
-            if (TimeBar.Value >= player.song.TimeInSeconds)
-            {
-                TimeBar.Value = 0;
-                player.playNextSong();
-                displayData();
-            }
-
             TimeBar.Value += 1;
             displayTime(TimeBar.Value, CurrentTime);
         }
 
         private void TimeBar_MouseUp(object sender, EventArgs e)
         {
-            mouseIsDown = false;
             SongTimer.Start();
+            player.Time = TimeBar.Value;
+
+            if (TimeBar.Value >= player.song.TimeInSeconds)
+            {
+                player.playNextSong();
+                setTimeBarData();
+                displayData();
+            }
         }
 
         private void TimeBar_MouseDown(object sender, EventArgs e)
         {
-            mouseIsDown = true;
             SongTimer.Stop();
         }
 
@@ -201,6 +206,14 @@ namespace IndieBeats_WFA
                 label.Text = minutes.ToString() + ":" + seconds.ToString();
         }
 
-        bool mouseIsDown = false;
+        private void Shuffle_Click(object sender, EventArgs e)
+        {
+            player.Shuffle = !player.Shuffle;
+
+            if (player.Shuffle)
+                Shuffle.Text = "Shuffle: on";
+            else
+                Shuffle.Text = "Shuffle: off";
+        }
     }
 }

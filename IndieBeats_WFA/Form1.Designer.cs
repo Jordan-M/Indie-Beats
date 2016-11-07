@@ -49,6 +49,7 @@
             this.Time = new System.Windows.Forms.Label();
             this.CurrentTime = new System.Windows.Forms.Label();
             this.SongTimer = new System.Windows.Forms.Timer(this.components);
+            this.Shuffle = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeSlider)).BeginInit();
             this.MenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.songTable)).BeginInit();
@@ -164,8 +165,10 @@
             // songTable
             // 
             this.songTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.songTable.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.songTable.Location = new System.Drawing.Point(12, 27);
             this.songTable.Name = "songTable";
+            this.songTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.songTable.Size = new System.Drawing.Size(940, 328);
             this.songTable.TabIndex = 9;
             // 
@@ -188,9 +191,9 @@
             // 
             // TimeBar
             // 
-            this.TimeBar.Location = new System.Drawing.Point(204, 548);
+            this.TimeBar.Location = new System.Drawing.Point(268, 548);
             this.TimeBar.Name = "TimeBar";
-            this.TimeBar.Size = new System.Drawing.Size(697, 45);
+            this.TimeBar.Size = new System.Drawing.Size(633, 45);
             this.TimeBar.TabIndex = 12;
             this.TimeBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.TimeBar.Scroll += new System.EventHandler(this.TimeBar_Scroll);
@@ -209,7 +212,7 @@
             // CurrentTime
             // 
             this.CurrentTime.AutoSize = true;
-            this.CurrentTime.Location = new System.Drawing.Point(201, 569);
+            this.CurrentTime.Location = new System.Drawing.Point(269, 569);
             this.CurrentTime.Name = "CurrentTime";
             this.CurrentTime.Size = new System.Drawing.Size(28, 13);
             this.CurrentTime.TabIndex = 14;
@@ -220,11 +223,22 @@
             this.SongTimer.Interval = 1000;
             this.SongTimer.Tick += new System.EventHandler(this.SongTimer_Tick);
             // 
+            // Shuffle
+            // 
+            this.Shuffle.Location = new System.Drawing.Point(204, 548);
+            this.Shuffle.Name = "Shuffle";
+            this.Shuffle.Size = new System.Drawing.Size(58, 45);
+            this.Shuffle.TabIndex = 15;
+            this.Shuffle.Text = "Shuffle: Off";
+            this.Shuffle.UseVisualStyleBackColor = true;
+            this.Shuffle.Click += new System.EventHandler(this.Shuffle_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(964, 605);
+            this.Controls.Add(this.Shuffle);
             this.Controls.Add(this.CurrentTime);
             this.Controls.Add(this.Time);
             this.Controls.Add(this.ArtistName);
@@ -274,6 +288,7 @@
         private System.Windows.Forms.Label Time;
         private System.Windows.Forms.Label CurrentTime;
         private System.Windows.Forms.Timer SongTimer;
+        private System.Windows.Forms.Button Shuffle;
     }
 }
 

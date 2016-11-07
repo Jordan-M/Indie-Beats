@@ -1,3 +1,3 @@
-﻿Add a loading screen when adding a music source so the user can't play music that isnt in the library yet'
+﻿Add a loading screen when adding a music source so the user can't play music that isnt in the library yet
 
-Make sure invalid file types are not being added to the database
+Choosing a random number for song shuffle does NOT work

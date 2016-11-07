@@ -2,17 +2,17 @@
 using System.IO;
 using System.Collections.Generic;
 using Un4seen.Bass;
+using System.Windows.Forms;
 
 namespace IndieBeats_WFA
 {
     class MediaPlayer
     {
         // Private instance variables
-        private int songIndex;
         private int stream;
 
         // Public instatnce variables
-        public MusicLibrary library;
+        public MusicLibraryDatabase library;
         public Song song = new Song();
 
         // Properties
@@ -38,32 +38,57 @@ namespace IndieBeats_WFA
         private double time;
         public double Time
         {
+            get { return time; }
             set { setTime(value); }
         }
 
+        private bool shuffle;
+        public bool Shuffle
+        {
+            get { return shuffle; }
+            set { shuffle = value; }
+        }
 
         // Constructor
         public MediaPlayer(int initialVolume = 100)
         {
+            verifyDependicies();
+
             // Create a new music library
-            library = new MusicLibrary();
+            library = new MusicLibraryDatabase();
 
             // Create the library database
             library.createLibraryDatabase("Test.DB");
 
+
             // Load the libary
             library.loadLibrary("Test.DB");
 
+            // Add the table
+            library.addLibraryTable("MainLibrary");
+  
+
+            // Set the music library table to use
+            library.TableName = "MainLibrary";
+
             // Initialzie song index to fist song
-            songIndex = 0;
+            song.Index = 0;
 
             // Create the audio stream
-            stream = createStream(library.getSongPath(songIndex));
+            stream = createStream(library.getSongPath(song.Index));
 
-            setSongData();
 
+
+            // Set song data only if we have a valid music database
+            if (library.libraryIsValid())
+            {
+                setSongData();
+            }
+
+            // Set the volume
             currentVolume = initialVolume;
 
+            // Start the application paused
             isPaused = true;
         }
 
@@ -87,16 +112,15 @@ namespace IndieBeats_WFA
         {
             freeStream(stream);
 
-            if (songIndex > 0)
+            if (song.Index > 0)
             {
-                stream = createStream(library.getSongPath(--songIndex));
-                song.Index = songIndex;
+                stream = createStream(library.getSongPath(--song.Index));
+                song.PreviousSongIndex = song.Index;
             } 
             else
             {
-                songIndex = 0;
                 song.Index = 0;
-                stream = createStream(library.getSongPath(songIndex));
+                stream = createStream(library.getSongPath(song.Index));
             }
 
 
@@ -113,16 +137,23 @@ namespace IndieBeats_WFA
         {
             freeStream(stream);
 
-            if (songIndex < library.getNumOfSongs())
+            if (shuffle)
             {
-                stream = createStream(library.getSongPath(++songIndex));
-                song.Index = songIndex;
+                song.PreviousSongIndex = song.Index;
+                song.Index = new Random().Next(library.getNumOfSongs());
+
+                playSong(song.Index);
+            }
+
+            else if (song.Index < library.getNumOfSongs())
+            {
+                stream = createStream(library.getSongPath(++song.Index));
+                song.Index = song.Index;
             }
             else
             {
-                songIndex = 0;
                 song.Index = 0;
-                stream = createStream(library.getSongPath(songIndex));
+                stream = createStream(library.getSongPath(song.Index));
             }
 
 
@@ -140,6 +171,8 @@ namespace IndieBeats_WFA
             freeStream(stream);
 
             stream = createStream(library.getSongPath(songNumber));
+            song.PreviousSongIndex = song.Index;
+            song.Index = songNumber;
             setVolume(currentVolume);
             playStream(stream);
             setSongData();
@@ -176,6 +209,7 @@ namespace IndieBeats_WFA
                 // create a stream channel from a file
                 return Bass.BASS_StreamCreateFile(file, 0L, 0L, BASSFlag.BASS_DEFAULT);
             }
+
             return 0;
         }
 
@@ -204,11 +238,11 @@ namespace IndieBeats_WFA
 
         private void setSongData()
         {
-            song.Path = library.getSongPath(songIndex);
+            song.Path = library.getSongPath(song.Index);
             song.Name = MetadataHandler.getTitle(song.Path);
             song.Album = MetadataHandler.getAlbum(song.Path);
-            song.Artist = MetadataHandler.getArtist(song.Path);
             song.AlbumArt = MetadataHandler.getAlbumArt(song.Path, 142, 142);
+            song.Artist = MetadataHandler.getArtist(song.Path);
             song.TimeInSeconds = (int)Math.Floor(Bass.BASS_ChannelBytes2Seconds(stream, Bass.BASS_ChannelGetLength(stream)));
             song.Minutes = getMinutes();
             song.Seconds = getSeconds();
@@ -223,8 +257,29 @@ namespace IndieBeats_WFA
         private int getSeconds()
         {
             double fullTime = Bass.BASS_ChannelBytes2Seconds(stream, Bass.BASS_ChannelGetLength(stream));
-            //fullTime = Math.Floor(fullTime);
             return (int)Math.Floor(fullTime % 60);
+        }
+
+        // Verifies that all the needed dlls are in the program folder
+        private void verifyDependicies()
+        {
+            if (!File.Exists("System.Data.SQLite.dll"))
+                throw new DllNotFoundException("System.Data.SQLite.dll could not be found!");
+
+            if (!File.Exists("SQLite.Interop.dll"))
+                throw new DllNotFoundException("SQLite.Interop.dll could not be found!");
+
+            if (!File.Exists("Bass.Net.dll"))
+                throw new DllNotFoundException("Bass.Net.dll could not be found!");
+
+            if (!File.Exists("bass.dll"))
+                throw new DllNotFoundException("bass.dll could not be found!");
+
+            if (!File.Exists("policy.2.0.taglib-sharp.dll"))
+                throw new DllNotFoundException("policy.2.0.taglib-sharp.dll could not be found!");
+
+            if (!File.Exists("taglib-sharp.dll"))
+                throw new DllNotFoundException("taglib-sharp.dll could not be found!");
         }
 
     }

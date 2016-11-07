@@ -54,8 +54,7 @@ namespace IndieBeats_WFA
                 var bin = (byte[])(info.Tag.Pictures[0].Data.Data);
                 return Image.FromStream(new MemoryStream(bin)).GetThumbnailImage(imageWidth, imageHeight, null, IntPtr.Zero);
             }
-
-            return Image.FromFile("..\\..\\..\\Images\\album_not_found.jpg").GetThumbnailImage(imageWidth, imageHeight, null, IntPtr.Zero);
+            return Properties.Resources.DefaultAlbumArt.GetThumbnailImage(imageWidth, imageHeight, null, IntPtr.Zero);
         }
     }
 }
