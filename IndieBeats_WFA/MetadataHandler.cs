@@ -2,12 +2,10 @@
 using System.Drawing;
 using System.IO;
 
-// We use TagLib here instead of Un4seen.Bass so we dont have to pass around a stream, 
-// we can get the file info with just a path.
-using TagLib;
-
 namespace IndieBeats_WFA
 {
+    // We use TagLib here instead of Un4seen.Bass so we dont have to pass around a stream. 
+    // We can get the file info with just a path.
     class MetadataHandler
     {
         public MetadataHandler()

@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 
-
 namespace IndieBeats_WFA
 {
     class Song

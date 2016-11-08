@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
 using Un4seen.Bass;
-using System.Windows.Forms;
 
 namespace IndieBeats_WFA
 {

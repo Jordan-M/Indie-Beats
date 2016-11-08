@@ -50,7 +50,6 @@
             this.CurrentTime = new System.Windows.Forms.Label();
             this.SongTimer = new System.Windows.Forms.Timer(this.components);
             this.Shuffle = new System.Windows.Forms.Button();
-            this.TESTLABEL = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeSlider)).BeginInit();
             this.MenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.songTable)).BeginInit();
@@ -234,21 +233,11 @@
             this.Shuffle.UseVisualStyleBackColor = true;
             this.Shuffle.Click += new System.EventHandler(this.Shuffle_Click);
             // 
-            // TESTLABEL
-            // 
-            this.TESTLABEL.AutoSize = true;
-            this.TESTLABEL.Location = new System.Drawing.Point(409, 435);
-            this.TESTLABEL.Name = "TESTLABEL";
-            this.TESTLABEL.Size = new System.Drawing.Size(35, 13);
-            this.TESTLABEL.TabIndex = 16;
-            this.TESTLABEL.Text = "label1";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(964, 605);
-            this.Controls.Add(this.TESTLABEL);
             this.Controls.Add(this.Shuffle);
             this.Controls.Add(this.CurrentTime);
             this.Controls.Add(this.Time);
@@ -300,7 +289,6 @@
         private System.Windows.Forms.Label CurrentTime;
         private System.Windows.Forms.Timer SongTimer;
         private System.Windows.Forms.Button Shuffle;
-        private System.Windows.Forms.Label TESTLABEL;
     }
 }
 
